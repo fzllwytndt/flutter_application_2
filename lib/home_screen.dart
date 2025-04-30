@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// Pastikan file ini ada dan sudah dibuat
+import 'cart_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -100,12 +102,23 @@ class HomeScreen extends StatelessWidget {
                 ),
                 trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                 onTap: () {
+                  // Tampilkan snackbar
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Anda memilih ${friends[index]['name']}'),
                       duration: Duration(seconds: 1),
                     ),
                   );
+
+                  // Navigasi setelah delay sedikit agar tidak bentrok
+                  Future.delayed(Duration(milliseconds: 500), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(jumlah: index + 1),
+                      ),
+                    );
+                  });
                 },
               ),
             );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'stack_screen.dart';
 import 'row_column_screen.dart';
-
+//import 'cart_screen.dart'; 
 void main() {
   runApp(const MyApp());
 }
@@ -35,9 +35,17 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-     HomeScreen(),
+    HomeScreen(),
     const StackScreen(),
     const RowColumnScreen(),
+   // const CartScreen(jumlah: 0), // ✅ tambah CartScreen ke list
+  ];
+
+  final List<String> _titles = [
+    '',
+    '',
+    '',
+    '', // ✅ tambah judul AppBar untuk Cart
   ];
 
   void _onItemTapped(int index) {
@@ -50,17 +58,20 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          _titles[_selectedIndex],
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         centerTitle: true,
         elevation: 4,
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
-        child: _screens[_selectedIndex],
+        child: KeyedSubtree( // 🔑 biar transisi lebih smooth
+          key: ValueKey<int>(_selectedIndex),
+          child: _screens[_selectedIndex],
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -80,6 +91,7 @@ class _MainScreenState extends State<MainScreen> {
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(icon: Icon(Icons.layers), label: 'Stack'),
               BottomNavigationBarItem(icon: Icon(Icons.grid_on), label: 'Row/Column'),
+              //BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'), // ✅ Cart icon
             ],
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.blueAccent,

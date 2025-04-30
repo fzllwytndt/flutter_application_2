@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 
-class RowColumnScreen extends StatelessWidget {
+class RowColumnScreen extends StatefulWidget {
   const RowColumnScreen({super.key});
+
+  @override
+  _RowColumnScreenState createState() => _RowColumnScreenState();
+}
+
+class _RowColumnScreenState extends State<RowColumnScreen> {
+  // Tambahkan TextEditingController untuk menangkap input
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Hapus controller untuk mencegah kebocoran memori
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +26,7 @@ class RowColumnScreen extends StatelessWidget {
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: const Text('Form Login',style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Form Login', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
       ),
@@ -37,6 +54,7 @@ class RowColumnScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: emailController, // Tambahkan controller
                     decoration: InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(
@@ -47,6 +65,7 @@ class RowColumnScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   TextField(
+                    controller: passwordController, // Tambahkan controller
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(
@@ -72,7 +91,19 @@ class RowColumnScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          // Simpan data login
+                          String email = emailController.text;
+                          String password = passwordController.text;
+
+                          // Tampilkan snackbar untuk konfirmasi
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Email: $email\nPassword: $password'),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
                         child: const Text('Login', style: TextStyle(color: Colors.white)),
                       ),
                       TextButton(
